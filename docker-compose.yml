@@ -1,0 +1,32 @@
+services:
+  app:
+    container_name: am_app
+    image: gulma/php-8.3.6-apache:1.4
+    ports:
+      - "80:80"
+      - "6001:6001"
+    volumes:
+      - ".:/var/www/html"
+    depends_on:
+      - db
+  db:
+    container_name: am_db
+    image: mysql:8.0.36
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=adrian_mercado
+    ports:
+      - "3306:3306"
+  node:
+    container_name: am_node
+    image: node:20
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    command: >
+      sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - HOST=0.0.0.0
