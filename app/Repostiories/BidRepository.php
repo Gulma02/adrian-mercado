@@ -2,23 +2,27 @@
 
 namespace App\Repostiories;
 
+use App\Exceptions\AuctionClosedException;
 use App\Exceptions\BidAmountException;
 use App\Models\Bid;
 
 class BidRepository {
     /**
      * @throws BidAmountException
+     * @throws AuctionClosedException
      */
     public static function createBid(array $data, $auction) {
-        $currentMax = max($auction->initial_price, $auction->bids()->max('amount') ?? 0); # Compara el precio inicial contra el maximo postor
-
-        if ($data['amount'] <= $currentMax) {
+        if ($data['amount'] <= $auction->bids()->max('amount') ?? 0 || $data["amount"] < $auction->initial_price) {
             throw new BidAmountException();
+        }
+
+        if ($auction->scheduled_at < now()) {
+            throw new AuctionClosedException();
         }
 
         return Bid::create([
             'auction_id' => $auction->id,
-            'dni'        => $data['dni'],
+            'document'        => $data['dni'],
             'amount'     => $data['amount'],
         ]);
     }

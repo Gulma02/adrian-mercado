@@ -4,7 +4,7 @@ services:
     image: gulma/php-8.3.6-apache:1.4
     ports:
       - "80:80"
-      - "6001:6001"
+      - "8080:8080"
     volumes:
       - ".:/var/www/html"
     depends_on:

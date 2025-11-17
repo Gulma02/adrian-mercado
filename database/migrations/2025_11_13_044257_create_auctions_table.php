@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->text('description');
             $table->decimal('initial_price', 12, 2);
             $table->timestamp('scheduled_at');
-            $table->timestamp("end_at");
+            //$table->timestamp("end_at");
             $table->timestamps();
 
             $table->index('scheduled_at');

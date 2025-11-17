@@ -29,4 +29,22 @@ class AuctionRepository {
     public static function getAuctions(?int $auctionId = null): Collection {
         return Auction::when($auctionId, fn($query) => $query->whereKey($auctionId))->get();
     }
+
+    public static function getAuctionsTableData(): array {
+        $finalList = [];
+        Auction::with(["bids"])->get()
+            ->map(function ($auction) use (&$finalList) {
+                $finalList[$auction->id] = [
+                    "price" => max($auction->initial_price, $auction->bids()->max('amount') ?? 0),
+                    "seller_name" => $auction->seller_name,
+                    "description" => $auction->description,
+                    "scheduled_at" => $auction->scheduled_at,
+                    "id" => $auction->id,
+                    "bids" => $auction->bids()->orderBy("id")->get()->map(fn ($bid) => ["amount" => $bid->amount, "document" => $bid->document])->toArray() ?? [],
+                    "finished" => ($auction->scheduled_at < now())
+                ];
+            });
+
+        return $finalList;
+    }
 }

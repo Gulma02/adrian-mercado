@@ -4,13 +4,11 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BidNotPlaced {
+class BidNotPlaced implements ShouldBroadcast{
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private string $reason;
@@ -26,15 +24,17 @@ class BidNotPlaced {
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+    public function broadcastOn(): Channel {
+        return new Channel('auctions');
     }
 
     public function broadcastWith(): array {
         return [
             'reason' => $this->reason,
         ];
+    }
+
+    public function broadcastAs(): string {
+        return 'bid.not-placed';
     }
 }
