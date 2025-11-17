@@ -18,7 +18,6 @@ const placeNewBid = (e, auctions) => {
     console.log(Number(e.bid.amount), Number(auction.price), auction)
     if ((isNaN(Number(auction.price)) && Number(e.bid.amount) >= Number(auction.initial_price)) || Number(e.bid.amount) > Number(auction.price)) {
         auction.price = Number(e.bid.amount).toFixed(2)
-        console.log(auction.bids)
         if (auction.bids === undefined || auction.bids === null) {
             auction.bids = []
         }

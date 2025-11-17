@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import {inject, onMounted, ref, watch} from "vue";
-    import {dayjs} from "element-plus";
+    import {dayjs, ElNotification} from "element-plus";
     import {useForm} from "@inertiajs/vue3";
 
     const { auctionDetailDialogVisible, activeAuction} = inject("auctionDetail")
@@ -57,7 +57,14 @@ import {inject, onMounted, ref, watch} from "vue";
             onSuccess: () => {
                 localStorage.setItem("dni", bidForm.dni)
             },
-            onError: () => console.log("error")
+            onError: () => {
+                ElNotification({
+                    title: "Error",
+                    message: "No se pudo enviar la puja. Verifique los datos e intente nuevamente.",
+                    type: "error",
+                    position: "bottom-right",
+                })
+            }
         })
     }
 
