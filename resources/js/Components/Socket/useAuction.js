@@ -15,7 +15,6 @@ const joinChannel = (auctions, filterTables) =>  {
 
 const placeNewBid = (e, auctions) => {
     const auction = auctions[e.bid.auction_id] ?? null
-    console.log(Number(e.bid.amount), Number(auction.price), auction)
     if ((isNaN(Number(auction.price)) && Number(e.bid.amount) >= Number(auction.initial_price)) || Number(e.bid.amount) > Number(auction.price)) {
         auction.price = Number(e.bid.amount).toFixed(2)
         if (auction.bids === undefined || auction.bids === null) {

@@ -36,7 +36,7 @@
     import FinishedAuctionDetail from "@/Components/Auctions/FinishedAuctionDetail.vue";
 
     const { finishedAuctions } = defineProps({
-        finishedAuctions: Array
+        finishedAuctions: Object
     })
 
     const activeAuction = ref({})
