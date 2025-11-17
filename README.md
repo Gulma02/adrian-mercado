@@ -1,59 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Instrucciones de instalación y ejecución
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto utiliza **Docker** para levantar el entorno completo de desarrollo, incluyendo la aplicación, el servidor web, el entorno de frontend y la base de datos MySQL.
 
-## About Laravel
+A continuación se detallan los pasos necesarios para ejecutar el proyecto desde cero.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 1. Copiar archivo `.env`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Antes de iniciar el entorno, es necesario copiar el archivo `.env` provisto en el siguiente link y colocarlo en la raíz del proyecto:
 
-## Learning Laravel
+```
+https://www.notion.so/Adrian-Mercado-env-Prueba-Tecnica-2aea6a1d244d8018bae7d8250e407001?source=copy_link
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Este archivo contiene la configuración necesaria para el correcto funcionamiento de la aplicación.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 2. Verificar puertos necesarios
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Previo a iniciar los contenedores, asegurarse de que los siguientes puertos **no estén en uso**:
 
-### Premium Partners
+* **80** → Servidor web
+* **8080** → Reverb / WebSockets
+* **5173** → Frontend (Vite)
+* **3306** → Base de datos MySQL
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+En caso de estar ocupados, liberar los puertos o modificar las configuraciones correspondientes.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 3. Levantar los contenedores con Docker
 
-## Code of Conduct
+Una vez verificados los puertos, levantar el entorno con:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+docker compose up -d
+```
 
-## Security Vulnerabilities
+Este comando descargará las imágenes necesarias (si no existen), construirá los contenedores y los dejará ejecutándose en segundo plano.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 4. Ingresar al contenedor de la aplicación
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para ejecutar comandos internos de Laravel, ingresar al contenedor principal:
+
+```
+docker exec -it am_app bash
+```
+
+Esto abrirá una terminal dentro del contenedor.
+
+---
+
+## 5. Ejecutar el proceso de inicialización
+
+Dentro del contenedor, correr el comando:
+
+```
+php artisan app:boot
+```
+
+Este comando inicializa la aplicación (migraciones, seeders u otros procesos definidos en el proyecto).
+
+---
+
+## 6. Aplicación lista
+
+Una vez completados los pasos anteriores, la aplicación estará lista para utilizarse.
+
+Podés acceder desde el navegador o mediante las herramientas indicadas en la documentación del proyecto.
